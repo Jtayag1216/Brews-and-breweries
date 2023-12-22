@@ -1,16 +1,53 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <AppHeader />
+  <AppMain />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BreweryService from '../src/services/BreweryService'
+import BeerService from '../src/services/BeerService'
+import AppHeader from '../src/components/AppHeader.vue'
+import AppMain from '../src/components/AppMain.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components: { AppHeader, AppMain
+  
+  },
+  data() {
+    return {
+      breweries: [],
+      beers: []
+    }
+  },
+  methods: {
+    getBreweries() {
+      BreweryService
+        .getBreweries()
+        .then(response => {
+          this.breweries = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getBeers() {
+      BeerService
+        .getBeers()
+        .then(response => {
+          this.beers = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+
+    }
+  },
+  created() {
+    this.getBreweries();
+    this.getBeers();
   }
+
 }
 </script>
 
